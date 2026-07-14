@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Summer School — AI & ML with Hermes and Claude">
+  <title>Summer School — AI & ML</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">Summer School</a>
+      <ul class="nav__links">
+        <li><a href="#section-1">Overview</a></li>
+        <li><a href="#section-2">Learn</a></li>
+        <li><a href="#section-3">Tools</a></li>
+        <li><a href="#section-4">Start</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Section 1 — Hero -->
+  <section class="section section--1 hero" id="section-1">
+    <!-- Parallax Claude logo background -->
+    <div class="hero__parallax-bg" id="hero-parallax-bg">
+      <img src="assets/claude-logo.png" alt="" class="hero__bg-logo">
+    </div>
+
+    <!-- Particle canvas (subtle overlay) -->
+    <canvas class="hero__particles" id="hero-particles"></canvas>
+
+    <div class="section__inner hero__inner">
+      <div class="hero__content reveal">
+
+        <h1 class="hero__title">
+          <span class="hero__title-line hero__title-line--main">the future is</span>
+          <span class="hero__title-line hero__title-line--accent">
+            on your finger tips
+          </span>
+        </h1>
+
+        <!-- Logo lockup: Claude + Hermes -->
+        <div class="hero__logos">
+          <!-- Claude logo -->
+          <div class="hero__logo hero__logo--claude">
+            <img src="assets/claude-logo.png" alt="Claude" class="hero__logo-img">
+            <span class="hero__logo-label">Claude</span>
+          </div>
+
+          <!-- Plus -->
+          <span class="hero__plus">+</span>
+
+          <!-- Hermes logo -->
+          <div class="hero__logo hero__logo--hermes">
+            <img src="assets/hermes-logo.png" alt="Hermes" class="hero__logo-img">
+            <span class="hero__logo-label">Hermes</span>
+          </div>
+        </div>
+
+        <!-- Explore button -->
+        <a href="#section-2" class="btn btn--explore">
+          Explore
+          <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2 — Learn / About -->
+  <section class="section section--2 learn" id="section-2">
+    <div class="section__inner learn__inner">
+      <div class="learn__header reveal">
+        <span class="learn__eyebrow">What You'll Learn</span>
+        <h2 class="learn__title">
+          From fundamentals to<br>
+          <span class="gradient-text">frontier AI</span>
+        </h2>
+        <p class="learn__subtitle">
+          Four weeks of hands-on AI &amp; ML — built and taught with
+          the tools that power the world's most advanced AI systems.
+        </p>
+      </div>
+
+      <div class="learn__grid">
+        <!-- Card 1 -->
+        <div class="learn-card reveal">
+          <div class="learn-card__icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="24" cy="24" r="20"/>
+              <circle cx="24" cy="24" r="8"/>
+              <line x1="24" y1="4" x2="24" y2="16"/>
+              <line x1="24" y1="32" x2="24" y2="44"/>
+              <line x1="4" y1="24" x2="16" y2="24"/>
+              <line x1="32" y1="24" x2="44" y2="24"/>
+            </svg>
+          </div>
+          <h3 class="learn-card__title">Neural Networks</h3>
+          <p class="learn-card__desc">
+            Understand how deep learning works — from perceptrons to transformers.
+            Build and train your own models from scratch.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="learn-card reveal">
+          <div class="learn-card__icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="6" y="6" width="36" height="28" rx="3"/>
+              <line x1="6" y1="34" x2="42" y2="34"/>
+              <line x1="6" y1="6" x2="42" y2="6"/>
+              <line x1="18" y1="34" x2="18" y2="42"/>
+              <line x1="30" y1="34" x2="30" y2="42"/>
+              <line x1="10" y1="42" x2="38" y2="42"/>
+            </svg>
+          </div>
+          <h3 class="learn-card__title">LLMs &amp; Prompt Engineering</h3>
+          <p class="learn-card__desc">
+            Master large language models. Learn prompting, RAG, fine-tuning,
+            and how to build production AI applications.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="learn-card reveal">
+          <div class="learn-card__icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="20" cy="20" r="10"/>
+              <circle cx="32" cy="14" r="6"/>
+              <circle cx="34" cy="28" r="7"/>
+              <circle cx="16" cy="34" r="8"/>
+              <line x1="24" y1="24" x2="28" y2="19"/>
+              <line x1="24" y1="26" x2="28" y2="30"/>
+              <line x1="20" y1="28" x2="18" y2="30"/>
+            </svg>
+          </div>
+          <h3 class="learn-card__title">Computer Vision</h3>
+          <p class="learn-card__desc">
+            CNNs, ViTs, object detection, segmentation, and generative vision.
+            Process images with state-of-the-art models.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="learn-card reveal">
+          <div class="learn-card__icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M24 4 L44 24 L24 44 L4 24Z"/>
+              <path d="M24 14 L34 24 L24 34 L14 24Z"/>
+              <circle cx="24" cy="24" r="4"/>
+              <line x1="24" y1="4" x2="24" y2="14"/>
+              <line x1="44" y1="24" x2="34" y2="24"/>
+              <line x1="24" y1="44" x2="24" y2="34"/>
+              <line x1="4" y1="24" x2="14" y2="24"/>
+            </svg>
+          </div>
+          <h3 class="learn-card__title">Reinforcement Learning</h3>
+          <p class="learn-card__desc">
+            RLHF, reward modeling, and policy optimization — the techniques
+            behind aligning AI with human values and preferences.
+          </p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="learn-card reveal">
+          <div class="learn-card__icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="6" y="10" width="36" height="28" rx="2"/>
+              <line x1="14" y1="10" x2="14" y2="38"/>
+              <line x1="6" y1="18" x2="14" y2="18"/>
+              <line x1="22" y1="18" x2="42" y2="18"/>
+              <line x1="22" y1="26" x2="42" y2="26"/>
+              <line x1="14" y1="34" x2="42" y2="34"/>
+            </svg>
+          </div>
+          <h3 class="learn-card__title">AI Agents &amp; Tool Use</h3>
+          <p class="learn-card__desc">
+            Build autonomous agents with Hermes Agent. Learn function calling,
+            multi-agent orchestration, and persistent memory systems.
+          </p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="learn-card reveal">
+          <div class="learn-card__icon">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 44 L4 14 L20 4 L36 14 L44 14 L44 44Z"/>
+              <path d="M20 4 L20 14 L36 14"/>
+              <line x1="14" y1="24" x2="34" y2="24"/>
+              <line x1="14" y1="32" x2="34" y2="32"/>
+              <line x1="14" y1="40" x2="24" y2="40"/>
+            </svg>
+          </div>
+          <h3 class="learn-card__title">MLOps &amp; Deployment</h3>
+          <p class="learn-card__desc">
+            Ship models to production. CI/CD for ML, model monitoring,
+            experiment tracking, and scalable inference pipelines.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3 — Tools (Hermes + Claude) -->
+  <section class="section section--3 tools" id="section-3">
+    <div class="section__inner tools__inner">
+      <div class="tools__header reveal">
+        <span class="tools__eyebrow">The Stack</span>
+        <h2 class="tools__title">
+          Two engines.<br>
+          <span class="gradient-text">One programme.</span>
+        </h2>
+        <p class="tools__subtitle">
+          Every project in this summer school runs on the same duo that ships
+          production AI — an open-source agent framework and a frontier reasoning model.
+        </p>
+      </div>
+
+      <div class="tools__split">
+        <!-- ── Hermes Column ── -->
+        <div class="tools__col tools__col--hermes reveal">
+          <div class="tools__col-head">
+            <img src="assets/hermes-logo.png" alt="Hermes Agent" class="tools__col-logo">
+            <h3 class="tools__col-name">Hermes Agent</h3>
+            <span class="tools__col-by">by Nous Research</span>
+            <span class="tools__col-badge">Open Source</span>
+          </div>
+
+          <ul class="tools__features">
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>Self-improving skills</strong>
+                <span>Learns from experience — saves workflows, corrections, and discoveries as reusable skills that compound over time.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>Persistent memory</strong>
+                <span>Remembers your preferences, environment, and lessons learned across every session — pluggable backends.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>20+ messaging platforms</strong>
+                <span>Telegram, Discord, Slack, WhatsApp, iMessage, Signal, Matrix, Teams, and more — same agent, every channel.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>Provider-agnostic</strong>
+                <span>Swap between any LLM provider — Anthropic, OpenAI, Google, DeepSeek, local models, 20+ others — mid-workflow.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>Multi-agent orchestration</strong>
+                <span>Spawn parallel agents, delegate subtasks, coordinate via kanban boards — ship faster with autonomous workers.</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="tools__stat">
+            <span class="tools__stat-num">215k+</span>
+            <span class="tools__stat-label">GitHub Stars</span>
+          </div>
+        </div>
+
+        <!-- ── Divider ── -->
+        <div class="tools__divider reveal">
+          <div class="tools__divider-line"></div>
+          <span class="tools__divider-plus">+</span>
+          <div class="tools__divider-line"></div>
+        </div>
+
+        <!-- ── Claude Column ── -->
+        <div class="tools__col tools__col--claude reveal">
+          <div class="tools__col-head">
+            <img src="assets/claude-logo.png" alt="Claude" class="tools__col-logo">
+            <h3 class="tools__col-name">Claude</h3>
+            <span class="tools__col-by">by Anthropic</span>
+            <span class="tools__col-badge tools__col-badge--claude">Frontier AI</span>
+          </div>
+
+          <ul class="tools__features">
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>State-of-the-art reasoning</strong>
+                <span>Handles complex analysis, multi-step logic, nuanced writing, and deep technical discussion — at frontier quality.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>Constitutional AI</strong>
+                <span>Trained to be helpful, harmless, and honest — aligned with human values through constitutional principles and RLHF.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>Massive context windows</strong>
+                <span>200K+ token context — process entire codebases, long documents, and multi-file projects in a single prompt.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>Advanced tool use</strong>
+                <span>Native function calling — write code, run terminals, search the web, analyze images, and orchestrate complex tasks.</span>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 10l3 3 7-7"/></svg>
+              <div>
+                <strong>Multi-modal capabilities</strong>
+                <span>Text, code, images, and documents — Claude reads, writes, analyzes, and generates across modalities.</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="tools__stat">
+            <span class="tools__stat-num">200K+</span>
+            <span class="tools__stat-label">Token Context</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4 — CTA -->
+  <section class="section section--4 cta" id="section-4">
+    <div class="section__inner cta__inner">
+      <div class="cta__card reveal">
+        <div class="cta__content">
+          <span class="cta__eyebrow">Limited Spots</span>
+          <h2 class="cta__title">
+            Ready to build<br>
+            <span class="gradient-text">the future?</span>
+          </h2>
+          <p class="cta__desc">
+            Join this summer's cohort. Four weeks. Twelve projects.
+            Two of the most advanced AI systems on the planet as your sandbox.
+          </p>
+
+          <div class="cta__schedule">
+            <div class="cta__schedule-item">
+              <span class="cta__schedule-date">Week 1</span>
+              <span class="cta__schedule-topic">Foundations — neural networks, transformers, LLMs</span>
+            </div>
+            <div class="cta__schedule-item">
+              <span class="cta__schedule-date">Week 2</span>
+              <span class="cta__schedule-topic">Vision &amp; generation — CNNs, diffusion, multimodal AI</span>
+            </div>
+            <div class="cta__schedule-item">
+              <span class="cta__schedule-date">Week 3</span>
+              <span class="cta__schedule-topic">Agents &amp; tools — Hermes Agent, function calling, orchestration</span>
+            </div>
+            <div class="cta__schedule-item">
+              <span class="cta__schedule-date">Week 4</span>
+              <span class="cta__schedule-topic">Ship it — MLOps, deployment, capstone project</span>
+            </div>
+          </div>
+
+          <div class="cta__actions">
+            <a href="#" class="btn btn--explore btn--cta">
+              Apply Now
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <span class="cta__note">Free. Online. Summer 2025.</span>
+          </div>
+        </div>
+
+        <div class="cta__logos">
+          <img src="assets/claude-logo.png" alt="Claude" class="cta__logo">
+          <span class="cta__logos-plus">×</span>
+          <img src="assets/hermes-logo.png" alt="Hermes Agent" class="cta__logo">
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2025 Summer School. Built with Hermes &amp; Claude AI.</p>
+    </footer>
+  </section>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

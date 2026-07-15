@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Claude</title>
+  <style>
+    :root {
+      --bg-deep: #0d0d0f; --bg-surface: #141418; --bg-raised: #1a1a20;
+      --text-primary: #f0ece4; --text-secondary: #9a9790; --text-muted: #5c5955;
+      --accent: #d9774a; --accent-hover: #e8946a; --border: rgba(255,255,255,0.06);
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --ease: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: var(--font); background: var(--bg-deep); color: var(--text-primary);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: ''; position: fixed; width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(217,119,74,0.08) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none;
+    }
+    .auth-card {
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 1.25rem;
+      padding: 2.5rem 2rem; width: 100%; max-width: 420px; position: relative; z-index: 1;
+    }
+    .auth-card__logo { display: flex; align-items: center; gap: 0.6rem; justify-content: center; margin-bottom: 2rem; }
+    .auth-card__logo svg { width: 32px; height: 32px; }
+    .auth-card__logo span { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.02em; }
+    .auth-card h1 { font-size: 1.5rem; font-weight: 500; text-align: center; margin-bottom: 0.4rem; }
+    .auth-card > p { text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .form-group input {
+      width: 100%; padding: 0.75rem 1rem; background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: 0.75rem; color: var(--text-primary); font-size: 0.95rem; font-family: var(--font);
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+    .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(217,119,74,0.12); }
+    .form-group input::placeholder { color: var(--text-muted); }
+    .btn {
+      width: 100%; padding: 0.8rem; background: var(--accent); color: #fff; border: none;
+      border-radius: 0.75rem; font-size: 0.95rem; font-weight: 600; font-family: var(--font);
+      cursor: pointer; transition: background 0.2s var(--ease), box-shadow 0.2s var(--ease); margin-top: 0.5rem;
+    }
+    .btn:hover { background: var(--accent-hover); box-shadow: 0 0 24px -6px rgba(217,119,74,0.3); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .error-msg {
+      display: none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+      color: #fca5a5; padding: 0.75rem 1rem; border-radius: 0.75rem; font-size: 0.85rem; margin-bottom: 1.25rem;
+    }
+    .auth-footer { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary); }
+    .auth-footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+    .auth-footer a:hover { text-decoration: underline; }
+    .back-link { display: block; text-align: center; margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted); text-decoration: none; }
+    .back-link:hover { color: var(--text-secondary); }
+  </style>
+</head>
+<body>
+
+  <div class="auth-card">
+    <div class="auth-card__logo">
+      <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="none" stroke="#d9774a" stroke-width="1.5" opacity="0.6"/><circle cx="16" cy="16" r="9" fill="none" stroke="#d9774a" stroke-width="1.8"/><circle cx="16" cy="16" r="3" fill="#e8946a"/></svg>
+      <span>Claude</span>
+    </div>
+    <h1>Welcome back</h1>
+    <p>Sign in to your account</p>
+    <div class="error-msg" id="formError"></div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" minlength="8">
+      </div>
+      <button type="submit" class="btn" id="submitBtn" data-original="Sign In">Sign In</button>
+    </form>
+    <p class="auth-footer">Don't have an account? <a href="register.html">Create one</a></p>
+    <a href="claude-landing.html" class="back-link">← Back to home</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+  // ═══ Supabase Auth — inline (replace URL + KEY below) ═══
+  const SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+
+  let sb = null;
+  try { sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.error('Supabase init:', e); }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    checkSession();
+  });
+
+  async function checkSession() {
+    if (!sb) return;
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) location.href = 'dashboard.html';
+    } catch(_) {}
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    clearError();
+    if (!sb) return showError('Auth unavailable. Set SUPABASE_URL/KEY in this file.');
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const btn = document.getElementById('submitBtn');
+
+    if (!email || !password) return showError('Please fill in all fields.');
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+
+    try {
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        btn.disabled = false;
+        btn.textContent = btn.getAttribute('data-original');
+        return showError(error.message);
+      }
+
+      // fire-and-forget session log
+      sb.from('user_sessions').insert({ user_id: data.user.id, user_agent: navigator.userAgent }).catch(()=>{});
+
+      location.href = 'dashboard.html';
+    } catch(err) {
+      btn.disabled = false;
+      btn.textContent = btn.getAttribute('data-original');
+      showError('Network error — check your connection and try again.');
+    }
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('formError');
+    if (!el) return;
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function clearError() {
+    const el = document.getElementById('formError');
+    if (el) el.style.display = 'none';
+  }
+  </script>
+</body>
+</html>

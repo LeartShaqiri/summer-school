@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude — AI for the Next Era</title>
+<style>
+/* ==========================================
+   Design System — Warm-tone dark theme
+   Surface: Decide/Learn (landing page)
+   ========================================== */
+
+:root {
+  --bg-deep:    #0d0d0f;
+  --bg-surface: #141418;
+  --bg-raised:  #1a1a20;
+  --text-primary:   #f0ece4;
+  --text-secondary: #9a9790;
+  --text-muted:     #5c5955;
+
+  --accent:      #d9774a;
+  --accent-dim:  #b5623a;
+  --accent-glow: rgba(217, 119, 74, 0.25);
+
+  --font-sans: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg-deep);
+  overflow-x: hidden;
+}
+
+/* ==========================================
+   HERO — Full screen, logo-centered
+   ========================================== */
+
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 45%, #1e1a18 0%, #0d0d0f 70%);
+}
+
+/* Subtle grain/noise overlay */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ambient glow behind logo */
+.hero__glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
+}
+
+/* --- The Logo Container (what we animate on scroll) --- */
+.logo-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* will be driven by JS — these are fallbacks */
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  will-change: transform, opacity, filter;
+}
+
+/* --- Logo SVG --- */
+.logo-svg {
+  width: 320px;
+  height: 320px;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .logo-svg {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+/* Hero tagline — fades in separately */
+.hero__tagline {
+  position: absolute;
+  bottom: 12vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  text-align: center;
+  transition: opacity 0.5s var(--ease-out-expo);
+}
+
+.hero__tagline h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.hero__tagline p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+/* ---- Floating terminal ---- */
+.hero-terminal {
+  position: absolute;
+  right: clamp(1rem, 6vw, 5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 380px;
+  max-width: 88vw;
+  z-index: 4;
+  opacity: 0;
+  animation: terminalFadeIn 1s var(--ease-out-expo) 0.4s forwards;
+}
+
+@keyframes terminalFadeIn {
+  from { opacity: 0; transform: translateY(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateY(-50%) translateY(0); }
+}
+
+@keyframes terminalFloat {
+  0%, 100% { transform: translateY(-50%) translateY(0); }
+  50%      { transform: translateY(-50%) translateY(-8px); }
+}
+
+.hero-terminal__window {
+  background: rgba(13, 13, 18, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.85rem;
+  overflow: hidden;
+  box-shadow:
+    0 0 40px -10px rgba(217, 119, 74, 0.12),
+    0 20px 50px -10px rgba(0, 0, 0, 0.5);
+  animation: terminalFloat 6s ease-in-out infinite;
+}
+
+.hero-terminal__titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.hero-terminal__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.hero-terminal__dot--red    { background: #ff5f56; }
+.hero-terminal__dot--yellow { background: #ffbd2e; }
+.hero-terminal__dot--green  { background: #27c93f; }
+
+.hero-terminal__title {
+  margin-left: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.hero-terminal__body {
+  padding: 1rem 1rem 1.2rem;
+  font-family: 'Cascadia Code', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: #d4d4d4;
+  min-height: 180px;
+}
+
+.hero-terminal__line {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 0.15rem;
+  opacity: 0;
+  animation: lineReveal 0.25s var(--ease-out-expo) forwards;
+}
+
+@keyframes lineReveal {
+  from { opacity: 0; transform: translateX(-4px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.hero-terminal__prompt {
+  color: var(--accent);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.hero-terminal__output {
+  color: #8b949e;
+}
+
+.hero-terminal__output--success {
+  color: #7ee787;
+}
+
+.hero-terminal__output--info {
+  color: #79c0ff;
+}
+
+.hero-terminal__cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background: #d4d4d4;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+.hero-terminal__cursor--hidden {
+  display: none;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+@media (max-width: 900px) {
+  .hero-terminal {
+    display: none;
+  }
+}
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: float 2.2s var(--ease-out-expo) infinite;
+  transition: opacity 0.6s;
+}
+
+.scroll-hint span {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+
+.scroll-hint__line {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--text-muted), transparent);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ==========================================
+   CONTENT SECTIONS
+   ========================================== */
+
+.content {
+  position: relative;
+  z-index: 5;
+  background: linear-gradient(180deg, transparent 0%, var(--bg-deep) 8%);
+}
+
+.section {
+  padding: clamp(4rem, 12vh, 7rem) 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section__label {
+  display: inline-block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+}
+
+.section p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 620px;
+}
+
+/* Capability cards — not a grid, a flowing list */
+.caps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.cap {
+  background: var(--bg-raised);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  transition: border-color 0.3s var(--ease-out-expo);
+}
+
+.cap:hover {
+  border-color: rgba(217, 119, 74, 0.3);
+}
+
+.cap__icon {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.cap h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.cap p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Quote block */
+.blockquote {
+  border-left: 2px solid var(--accent-dim);
+  padding-left: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.blockquote p {
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text-primary);
+}
+
+.blockquote cite {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-style: normal;
+  color: var(--text-muted);
+}
+
+/* CTA */
+.cta {
+  text-align: center;
+  padding: clamp(4rem, 14vh, 8rem) 1.5rem;
+  background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(217,119,74,0.06) 0%, transparent 70%);
+}
+
+.cta h2 {
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  margin: 0 auto 2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s var(--ease-out-expo);
+  color: #fff;
+  background: var(--accent);
+}
+
+.btn:hover {
+  background: var(--accent-dim);
+  box-shadow: 0 0 30px -8px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.btn--ghost {
+  background: transparent;
+  border: 1px solid rgba(217, 119, 74, 0.3);
+  color: var(--accent);
+}
+
+.btn--ghost:hover {
+  background: rgba(217, 119, 74, 0.08);
+  box-shadow: none;
+}
+
+/* ---- Top nav (auth links) ---- */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  pointer-events: none;
+}
+
+.top-nav__brand {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.top-nav__actions {
+  display: flex;
+  gap: 0.75rem;
+  pointer-events: auto;
+}
+
+.nav-link {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.04);
+}
+
+.nav-link--primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.nav-link--primary:hover {
+  background: var(--accent-dim);
+  color: #fff;
+}
+
+#userGreeting {
+  display: none;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Footer */
+.footer {
+  padding: 3rem 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  text-align: center;
+}
+
+.footer p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 600px;
+  }
+  .caps {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================
+   REDUCED MOTION
+   ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-stage,
+  .hero__glow,
+  .scroll-hint {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     TOP NAV — auth-aware
+     ============================================ -->
+<nav class="top-nav">
+  <a href="claude-landing.html" class="top-nav__brand">Claude</a>
+  <div class="top-nav__actions" id="navActions">
+    <a href="login.html" class="nav-link">Sign In</a>
+    <a href="register.html" class="nav-link nav-link--primary">Sign Up</a>
+  </div>
+  <div id="userGreeting">
+    <span id="userName"></span>
+    <a href="dashboard.html" class="nav-link">Dashboard</a>
+    <a href="#" class="nav-link" id="logoutBtn">Sign Out</a>
+  </div>
+</nav>
+
+<!-- ============================================
+     HERO
+     ============================================ -->
+<section class="hero" id="hero">
+
+  <!-- Ambient glow -->
+  <div class="hero__glow" aria-hidden="true"></div>
+
+  <!-- The logo — animated by JS on scroll -->
+  <div class="logo-stage" id="logoStage" aria-hidden="true">
+    <svg class="logo-svg" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="outerGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#d9774a" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#d9774a" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="innerGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#e8946a" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#d9774a" stop-opacity="0.05"/>
+        </radialGradient>
+        <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#d9774a" stop-opacity="0.7"/>
+          <stop offset="50%" stop-color="#e8946a" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#b5623a" stop-opacity="0.6"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+        <filter id="softGlow">
+          <feGaussianBlur stdDeviation="8" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+      </defs>
+
+      <!-- Outer glow circles -->
+      <circle cx="160" cy="160" r="155" fill="url(#outerGrad)"/>
+      <circle cx="160" cy="160" r="120" fill="none" stroke="rgba(217,119,74,0.06)" stroke-width="0.5"/>
+
+      <!-- Middle decorative ring -->
+      <circle cx="160" cy="160" r="95" fill="none" stroke="rgba(217,119,74,0.08)" stroke-width="0.5"/>
+
+      <!-- Main concentric rings -->
+      <g filter="url(#glow)">
+        <!-- Outer ring -->
+        <circle cx="160" cy="160" r="72" fill="none" stroke="url(#ringGrad)" stroke-width="1.8" opacity="0.75"/>
+        <!-- Middle ring -->
+        <circle cx="160" cy="160" r="48" fill="none" stroke="url(#ringGrad)" stroke-width="2.2" opacity="0.85"/>
+        <!-- Inner ring -->
+        <circle cx="160" cy="160" r="24" fill="none" stroke="url(#ringGrad)" stroke-width="2.8"/>
+      </g>
+
+      <!-- Connecting radial lines (8 spokes) -->
+      <g stroke="rgba(217,119,74,0.3)" stroke-width="0.8" opacity="0.5">
+        <line x1="160" y1="88"  x2="160" y2="112"/>
+        <line x1="160" y1="208" x2="160" y2="232"/>
+        <line x1="88"  y1="160" x2="112" y2="160"/>
+        <line x1="208" y1="160" x2="232" y2="160"/>
+        <line x1="109" y1="109" x2="126" y2="126"/>
+        <line x1="194" y1="194" x2="211" y2="211"/>
+        <line x1="109" y1="211" x2="126" y2="194"/>
+        <line x1="194" y1="126" x2="211" y2="109"/>
+      </g>
+
+      <!-- Center dot -->
+      <g filter="url(#softGlow)">
+        <circle cx="160" cy="160" r="6" fill="#e8946a" opacity="0.9"/>
+      </g>
+
+      <!-- Small orbiting dots -->
+      <g fill="#d9774a" opacity="0.7">
+        <circle cx="160" cy="88" r="2.5">
+          <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="20s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="232" cy="160" r="2">
+          <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="28s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="160" cy="232" r="2.5">
+          <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="24s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="88" cy="160" r="2">
+          <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="360 160 160" dur="32s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <!-- Diagonal accent dots -->
+      <g fill="#e8946a" opacity="0.4">
+        <circle cx="109" cy="109" r="1.5">
+          <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="-360 160 160" dur="35s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="211" cy="211" r="1.5">
+          <animateTransform attributeName="transform" type="rotate" from="0 160 160" to="-360 160 160" dur="35s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Floating terminal -->
+  <div class="hero-terminal" id="heroTerminal" aria-hidden="true">
+    <div class="hero-terminal__window">
+      <div class="hero-terminal__titlebar">
+        <span class="hero-terminal__dot hero-terminal__dot--red"></span>
+        <span class="hero-terminal__dot hero-terminal__dot--yellow"></span>
+        <span class="hero-terminal__dot hero-terminal__dot--green"></span>
+        <span class="hero-terminal__title">claude — developer terminal</span>
+      </div>
+      <div class="hero-terminal__body" id="terminalBody"></div>
+    </div>
+  </div>
+
+  <!-- Tagline -->
+  <div class="hero__tagline" id="heroTagline">
+    <h1>Intelligence, Amplified</h1>
+    <p>Claude AI · Thoughtful by design</p>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="scroll-hint" id="scrollHint">
+    <span>Scroll</span>
+    <div class="scroll-hint__line"></div>
+  </div>
+
+</section>
+
+<!-- ============================================
+     CONTENT SECTIONS
+     ============================================ -->
+<div class="content" id="contentStart">
+
+  <!-- Capabilities -->
+  <section class="section">
+    <span class="section__label">Capabilities</span>
+    <h2>Reasoning that goes deeper</h2>
+    <p>
+      Claude processes context with nuance — analyzing documents, writing code,
+      and engaging in extended dialogue without losing the thread. Every response
+      is grounded in careful reasoning, not statistical parroting.
+    </p>
+
+    <div class="caps">
+      <div class="cap">
+        <div class="cap__icon">◆</div>
+        <h3>Long-Context Analysis</h3>
+        <p>Process entire books, codebases, or research corpora in a single pass with precise recall.</p>
+      </div>
+      <div class="cap">
+        <div class="cap__icon">◆</div>
+        <h3>Multimodal Understanding</h3>
+        <p>Read images, charts, and documents alongside text — connecting visual and written information seamlessly.</p>
+      </div>
+      <div class="cap">
+        <div class="cap__icon">◆</div>
+        <h3>Code &amp; Tool Use</h3>
+        <p>Write, debug, and reason about code across dozens of languages. Use tools and APIs with structured precision.</p>
+      </div>
+      <div class="cap">
+        <div class="cap__icon">◆</div>
+        <h3>Safety by Design</h3>
+        <p>Built with constitutional principles — helpful without being harmful, honest without being evasive.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="section">
+    <span class="section__label">Philosophy</span>
+    <h2>Thoughtful, not just fast</h2>
+    <p>
+      Most AI optimizes for speed. Claude optimizes for thoughtfulness — the
+      kind of intelligence that pauses, reflects, and gets things right the first
+      time. It's the difference between a quick answer and a good one.
+    </p>
+
+    <div class="blockquote">
+      <p>"The measure of intelligence is not speed — it's the depth of understanding brought to bear on a problem."</p>
+      <cite>— Anthropic Research</cite>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Experience Claude</h2>
+    <p>Join millions who use Claude every day to think deeper, create faster, and work smarter.</p>
+    <a href="#" class="btn">Try Claude →</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 · Built with care</p>
+  </footer>
+
+</div>
+
+
+<!-- ============================================
+     TERMINAL TYPING ANIMATION
+     ============================================ -->
+<script>
+(function () {
+  'use strict';
+
+  const body = document.getElementById('terminalBody');
+  if (!body) return;
+
+  const CURSOR = '<span class="hero-terminal__cursor"></span>';
+  const CURSOR_HIDDEN = '<span class="hero-terminal__cursor hero-terminal__cursor--hidden"></span>';
+
+  const scripts = [
+    { cmd: 'claude analyze app.ts', out: ['✓ Analysis complete', 'Found 0 critical issues.', '', ''], cls: '--success' },
+    { cmd: 'claude explain auth.ts', out: ['Generating explanation...', '✓ Authentication flow documented.', ''], cls: '--info' },
+    { cmd: 'claude optimize dashboard.jsx', out: ['Optimizing component...', '✓ Performance improved by 24%.', ''], cls: '--success' },
+    { cmd: 'claude generate api', out: ['Creating REST endpoints...', '✓ 6 endpoints generated successfully.', ''], cls: '--success' },
+    { cmd: 'claude review project', out: ['Scanning 147 source files...', '✓ Code quality: Excellent', ''], cls: '--info' },
+    { cmd: 'claude deploy backend', out: ['Building containers...', '✓ Deployed to production in 12s.', ''], cls: '--success' },
+    { cmd: 'claude test --coverage', out: ['Running 203 test suites...', '✓ 98.4% coverage — all passing.', ''], cls: '--success' },
+  ];
+
+  let activeIdx = 0;
+  let typingTimer = null;
+
+  function showCursor() {
+    return CURSOR;
+  }
+
+  function lineHTML(prompt, text, cls) {
+    const clsAttr = cls ? ' hero-terminal__output' + cls : ' hero-terminal__output';
+    return '<div class="hero-terminal__line">' +
+      '<span class="hero-terminal__prompt">' + prompt + '</span>' +
+      '<span class="' + clsAttr + '">' + text + '</span>' +
+      '</div>';
+  }
+
+  function typeCommand(script, callback) {
+    body.innerHTML = '';
+    const promptLine = document.createElement('div');
+    promptLine.className = 'hero-terminal__line';
+    promptLine.style.opacity = '1';
+
+    const promptSpan = document.createElement('span');
+    promptSpan.className = 'hero-terminal__prompt';
+    promptSpan.textContent = '>';
+
+    const cmdSpan = document.createElement('span');
+    cmdSpan.style.color = '#d4d4d4';
+
+    const cursor = document.createElement('span');
+    cursor.className = 'hero-terminal__cursor';
+
+    promptLine.appendChild(promptSpan);
+    promptLine.appendChild(cmdSpan);
+    promptLine.appendChild(cursor);
+    body.appendChild(promptLine);
+
+    let i = 0;
+    const typeSpeed = 35 + Math.random() * 25;
+
+    function typeChar() {
+      if (i < script.cmd.length) {
+        cmdSpan.textContent += script.cmd[i];
+        i++;
+        typingTimer = setTimeout(typeChar, typeSpeed);
+      } else {
+        // Done typing — flash cursor then show output
+        setTimeout(() => {
+          cursor.classList.add('hero-terminal__cursor--hidden');
+
+          // Show outputs with staggered delay
+          script.out.forEach((outLine, idx) => {
+            if (!outLine) return;
+            setTimeout(() => {
+              const cls = outLine.startsWith('✓') ? '--success' :
+                          outLine.includes('...') ? '--info' : '';
+              const div = document.createElement('div');
+              div.className = 'hero-terminal__line';
+              div.innerHTML = '<span class="hero-terminal__output hero-terminal__output' + cls + '">' +
+                escapeHTML(outLine) + '</span>';
+              body.appendChild(div);
+            }, 300 + idx * 350);
+          });
+
+          // Wait then cycle to next
+          const totalOutTime = 300 + script.out.filter(l => l).length * 350 + 1800;
+          typingTimer = setTimeout(callback, totalOutTime);
+        }, 400);
+      }
+    }
+
+    typeChar();
+  }
+
+  function escapeHTML(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  function runLoop() {
+    const script = scripts[activeIdx];
+    typeCommand(script, () => {
+      activeIdx = (activeIdx + 1) % scripts.length;
+      // Brief pause before next command
+      typingTimer = setTimeout(runLoop, 600);
+    });
+  }
+
+  // Start after a short delay
+  typingTimer = setTimeout(runLoop, 600);
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    clearTimeout(typingTimer);
+  });
+})();
+</script>
+
+<!-- ============================================
+     PARALLAX ENGINE
+     ============================================ -->
+<script>
+(function () {
+  'use strict';
+
+  const logoStage   = document.getElementById('logoStage');
+  const heroTagline = document.getElementById('heroTagline');
+  const scrollHint  = document.getElementById('scrollHint');
+  const hero        = document.getElementById('hero');
+
+  if (!logoStage) return;
+
+  const heroHeight  = hero ? hero.offsetHeight : window.innerHeight;
+
+  // --- Animation state ---
+  let rafId     = null;
+  let current   = { y: 0, scale: 1, rotate: 0, opacity: 1, blur: 0 };
+  let prevTick  = 0;
+
+  // --- Target computed from scroll position ---
+  function computeTarget(scrollY) {
+    // How far we've scrolled through the hero (0 to 1)
+    const progress = Math.min(scrollY / (heroHeight * 0.9), 1);
+
+    // Logo moves downward with scroll   (translateY grows)
+    const targetY = progress * 180;
+
+    // Subtle scale: starts at 1, goes to 0.75 at full scroll
+    const targetScale = 1 - (progress * 0.25);
+
+    // Gentle rotation: 0° → 4°
+    const targetRotate = progress * 4;
+
+    // Opacity: 1 → 0.15 as content appears
+    const targetOpacity = 1 - (progress * 0.85);
+
+    // Blur: 0px → 6px
+    const targetBlur = progress * 6;
+
+    return { y: targetY, scale: targetScale, rotate: targetRotate,
+             opacity: targetOpacity, blur: targetBlur };
+  }
+
+  // --- Apply current state to DOM ---
+  function applyState(state) {
+    const t = 'translate3d(-50%, calc(-50% + ' + state.y + 'px), 0) ' +
+              'scale(' + state.scale.toFixed(4) + ') ' +
+              'rotate(' + state.rotate.toFixed(3) + 'deg)';
+
+    logoStage.style.transform = t;
+    logoStage.style.opacity   = state.opacity.toFixed(4);
+    logoStage.style.filter    = 'blur(' + state.blur.toFixed(2) + 'px)';
+  }
+
+  // --- Main animation loop (runs at display refresh rate) ---
+  function tick(timestamp) {
+    const dt = prevTick ? (timestamp - prevTick) / 1000 : 0.016;
+    prevTick = timestamp;
+
+    const scrollY = window.scrollY || window.pageYOffset;
+    const target  = computeTarget(scrollY);
+
+    // Smooth lerp — lower ratio = smoother but more lag
+    // Use a variable ratio that converges faster on fast scroll
+    const speed   = Math.abs(scrollY - current.y * 0.5) > 200 ? 0.12 : 0.06;
+    const ratio   = 1 - Math.exp(-speed * 60 * dt); // framerate-independent lerp
+
+    current.y       += (target.y       - current.y)       * ratio;
+    current.scale   += (target.scale   - current.scale)   * ratio;
+    current.rotate  += (target.rotate  - current.rotate)  * ratio;
+    current.opacity += (target.opacity - current.opacity) * ratio;
+    current.blur    += (target.blur    - current.blur)    * ratio;
+
+    applyState(current);
+
+    // Fade out tagline and scroll hint
+    const heroProgress = scrollY / (heroHeight * 0.65);
+    if (heroTagline) heroTagline.style.opacity = Math.max(0, 1 - heroProgress * 1.6).toFixed(3);
+    if (scrollHint)  scrollHint.style.opacity  = Math.max(0, 1 - heroProgress * 2.2).toFixed(3);
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  // --- Kick off ---
+  // Start logo centered
+  applyState({ y: 0, scale: 1, rotate: 0, opacity: 1, blur: 0 });
+
+  rafId = requestAnimationFrame(tick);
+
+  // --- Handle resize ---
+  let resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      // Re-measure hero height
+      const newHeroHeight = hero ? hero.offsetHeight : window.innerHeight;
+      // Snap to current scroll position (no jump)
+      const target = computeTarget(window.scrollY);
+      current.y       = target.y;
+      current.scale   = target.scale;
+      current.rotate  = target.rotate;
+      current.opacity = target.opacity;
+      current.blur    = target.blur;
+      applyState(current);
+    }, 150);
+  }, { passive: true });
+
+})();
+</script>
+
+<!-- Supabase CDN + auth-aware nav -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// Session-aware top nav — toggles Sign In/Up vs greeting + logout
+(async function () {
+  try {
+    const { createClient } = window.supabase;
+    if (!createClient) return;
+
+    const supabase = createClient(
+      'https://YOUR-PROJECT.supabase.co',        // ← REPLACE ME
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'  // ← REPLACE ME
+    );
+
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+      document.getElementById('navActions').style.display = 'none';
+      const greet = document.getElementById('userGreeting');
+      greet.style.display = 'flex';
+      document.getElementById('userName').textContent =
+        'Hello, ' + (session.user.user_metadata?.full_name || session.user.email);
+
+      document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        await supabase.auth.signOut();
+        window.location.reload();
+      });
+    }
+  } catch (_) { /* Supabase not configured yet — nav stays as guest */ }
+})();
+</script>
+
+</body>
+</html>
